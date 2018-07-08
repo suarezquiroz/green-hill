@@ -11,9 +11,10 @@ using System;
 namespace Green_Hill.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180708084518_oneContext")]
+    partial class oneContext
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,14 +31,20 @@ namespace Green_Hill.Data.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<string>("Documento");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<DateTime>("FechaNacimiento");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("Nombre");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -51,7 +58,11 @@ namespace Green_Hill.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<int>("RolId");
+
                     b.Property<string>("SecurityStamp");
+
+                    b.Property<string>("Sexo");
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -68,6 +79,8 @@ namespace Green_Hill.Data.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("RolId");
+
                     b.ToTable("AspNetUsers");
                 });
 
@@ -80,7 +93,7 @@ namespace Green_Hill.Data.Migrations
 
                     b.Property<int>("TipoCitaId");
 
-                    b.Property<int>("UsuarioId");
+                    b.Property<string>("UsuarioId");
 
                     b.HasKey("Id");
 
@@ -113,32 +126,6 @@ namespace Green_Hill.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TiposCita");
-                });
-
-            modelBuilder.Entity("Green_Hill.Models.Usuario", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ApplicationUserId");
-
-                    b.Property<string>("Documento");
-
-                    b.Property<DateTime>("FechaNacimiento");
-
-                    b.Property<string>("Nombre");
-
-                    b.Property<int>("RolId");
-
-                    b.Property<string>("Sexo");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("RolId");
-
-                    b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -249,6 +236,14 @@ namespace Green_Hill.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Green_Hill.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("Green_Hill.Models.Rol", "Rol")
+                        .WithMany()
+                        .HasForeignKey("RolId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Green_Hill.Models.Cita", b =>
                 {
                     b.HasOne("Green_Hill.Models.TipoCita", "TipoCita")
@@ -256,22 +251,9 @@ namespace Green_Hill.Data.Migrations
                         .HasForeignKey("TipoCitaId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Green_Hill.Models.Usuario", "Usuario")
+                    b.HasOne("Green_Hill.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Green_Hill.Models.Usuario", b =>
-                {
-                    b.HasOne("Green_Hill.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("Green_Hill.Models.Rol", "Rol")
-                        .WithMany()
-                        .HasForeignKey("RolId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

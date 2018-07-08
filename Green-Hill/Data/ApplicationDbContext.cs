@@ -22,5 +22,10 @@ namespace Green_Hill.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        public DbSet<Cita> Citas { get; set; }
+        public DbSet<TipoCita> TiposCita { get; set; }
+        public DbSet<Rol> RolesUsuario { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
     }
 }

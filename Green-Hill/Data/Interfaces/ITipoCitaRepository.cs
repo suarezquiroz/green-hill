@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Green_Hill.Data.Interfaces
 {
-    public interface IUsuarioRepository : IRepository<Usuario>
+    public interface ITipoCitaRepository : IRepository<TipoCita>
     {
-
-        Usuario GetByIdentityUserId(string identityUserId);
     }
 }

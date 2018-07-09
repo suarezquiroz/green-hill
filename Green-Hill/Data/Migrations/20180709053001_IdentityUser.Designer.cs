@@ -4,14 +4,16 @@ using Green_Hill.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Green_Hill.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180709053001_IdentityUser")]
+    partial class IdentityUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,13 +50,6 @@ namespace Green_Hill.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RolesUsuario");
-
-                    b.HasData(
-                        new { Id = 1, Titulo = "Administrador" },
-                        new { Id = 2, Titulo = "Paciente" },
-                        new { Id = 3, Titulo = "Empleado" },
-                        new { Id = 4, Titulo = "Medico" }
-                    );
                 });
 
             modelBuilder.Entity("Green_Hill.Models.TipoCita", b =>
@@ -67,13 +62,6 @@ namespace Green_Hill.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TiposCita");
-
-                    b.HasData(
-                        new { Id = 1, Titulo = "Medicina General" },
-                        new { Id = 2, Titulo = "Odontología" },
-                        new { Id = 3, Titulo = "Pediatría" },
-                        new { Id = 4, Titulo = "Neurología" }
-                    );
                 });
 
             modelBuilder.Entity("Green_Hill.Models.Usuario", b =>

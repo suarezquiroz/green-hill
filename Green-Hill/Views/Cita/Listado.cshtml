@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Cita>
+@*
+	For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<table class="table table-striped table-hover ">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Fecha</th>
+			<th>Paciente</th>
+			<th>Tipo de cita</th>
+			<th>Cancelación</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (Cita cita in Model)
+		{
+			<tr>
+				<td>@cita.Id</td>
+				<td>@cita.Fecha</td>
+				<td>@cita.Usuario.Nombre</td>
+				<td>@cita.TipoCita.Titulo</td>
+				<td><a class="btn btn-danger" asp-area="" asp-controller="Cita" asp-action="Delete" asp-route-id="@cita.Id">Cancelar Cita</a></td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<a class="btn btn-success mt-5" style="margin: 10px" asp-controller="Cita" asp-action="Create">Agendar Cita</a>

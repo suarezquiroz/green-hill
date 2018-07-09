@@ -10,8 +10,13 @@ namespace Green_Hill.Data.Respository
     public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
     {
         public UsuarioRepository(ApplicationDbContext context) : base(context)
-    {
-    }
+        {
+        }
 
-}
+        public Usuario GetByIdentityUserId(string identityUserId)
+        {
+            return _context.Usuarios.SingleOrDefault(u => u.IdentityUserId == identityUserId);
+        }
+
+    }
 }

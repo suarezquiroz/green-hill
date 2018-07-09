@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -18,8 +19,8 @@ namespace Green_Hill.Models
         public int RolId { get; set; }
         public Rol Rol { get; set; }
 
-        [ForeignKey("ApplicationUser")]
-        public string ApplicationUserId { get; set; } //primary key is a token
-        public ApplicationUser ApplicationUser { get; set; }
+        [ForeignKey("IdentityUser")]
+        public string IdentityUserId { get; set; } //primary key is a token
+        public virtual IdentityUser IdentityUser { get; set; }
     }
 }

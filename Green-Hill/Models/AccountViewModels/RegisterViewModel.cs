@@ -6,8 +6,31 @@ using System.Threading.Tasks;
 
 namespace Green_Hill.Models.AccountViewModels
 {
+
+    public enum Sexo
+    {
+        Hombre, Mujer
+    }
+
     public class RegisterViewModel
     {
+
+        [Required]
+        [Display(Name = "Nombre")]
+        public string Nombre { get; set; }
+
+        [Required]
+        [Display(Name = "Documento")]
+        public string Documento { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "FechaNacimiento")]
+        public DateTime FechaNacimiento { get; set; }
+
+        [Display(Name = "Sexo")]
+        public Sexo Sexo { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

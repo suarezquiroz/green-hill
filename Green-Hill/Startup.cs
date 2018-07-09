@@ -33,7 +33,7 @@ namespace Green_Hill
             //services.AddDbContext<GreenHillDbContext>(options =>
             //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -65,6 +65,7 @@ namespace Green_Hill
 
             services.AddTransient<ICitaRepository, CitaRepository>();
             services.AddTransient<IUsuarioRepository, UsuarioRepository>();
+            services.AddTransient<ITipoCitaRepository, TipoCitaRepository>();
 
             services.AddMvc();
         }

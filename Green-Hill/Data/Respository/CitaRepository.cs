@@ -16,7 +16,7 @@ namespace Green_Hill.Data.Respository
 
         public IEnumerable<Cita> GetAllCitasUsuario(int UserId)
         {
-            return _context.Citas.Where(c => c.UsuarioId == UserId).ToList();
+            return _context.Citas.Include(c=>c.Usuario).Include(c => c.TipoCita).Where(c => c.UsuarioId == UserId).ToList();
         }
 
         public IEnumerable<Cita> GetCitasFecha(int UserId, DateTime Day)

@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using Green_Hill.Models;
 using Green_Hill.Models.AccountViewModels;
 using Green_Hill.Services;
+using Green_Hill.Data.Interfaces;
 
 namespace Green_Hill.Controllers
 {
@@ -20,21 +21,24 @@ namespace Green_Hill.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IUsuarioRepository _usuarios;
 
         public AccountController(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IUsuarioRepository usuarios)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _usuarios = usuarios;
         }
 
         [TempData]
@@ -220,10 +224,22 @@ namespace Green_Hill.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new IdentityUser { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    var usuario = new Usuario
+                    {
+                        IdentityUserId = user.Id,
+                        Nombre = model.Nombre,
+                        Documento = model.Documento,
+                        FechaNacimiento = model.FechaNacimiento,
+                        Sexo = model.Sexo.ToString(),
+                        RolId = 1 //create dropdown
+                        
+                    };
+
+                    _usuarios.Create(usuario);
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

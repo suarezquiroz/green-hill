@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Green_Hill.Data;
 using Green_Hill.Models;
 using Green_Hill.Services;
+using Green_Hill.Data.Respository;
+using Green_Hill.Data.Interfaces;
 
 namespace Green_Hill
 {
@@ -60,6 +62,9 @@ namespace Green_Hill
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+
+            services.AddTransient<ICitaRepository, CitaRepository>();
+            services.AddTransient<IUsuarioRepository, UsuarioRepository>();
 
             services.AddMvc();
         }

@@ -13,7 +13,7 @@ namespace Green_Hill.Controllers
         public IActionResult Index()
         {
 
-            return RedirectToAction("Listado");
+            return RedirectToAction("Listado","Cita");
         }
 
         public IActionResult About()

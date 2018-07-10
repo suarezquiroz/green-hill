@@ -3,7 +3,7 @@
 	For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-	ViewData["Title"] = "List";
+	ViewData["Title"] = "Listado";
 }
 
 <table id="tabla-listado" class="table table-striped table-hover ">
@@ -22,11 +22,13 @@
 				<td>@cita.Fecha</td>
 				<td>@cita.Usuario.Nombre</td>
 				<td>@cita.TipoCita.Titulo</td>
-				<td><a class="btn btn-danger" asp-area="" asp-controller="Cita" asp-action="Delete" asp-route-id="@cita.Id">Cancelar Cita</a></td>
+				<td>
+					<a class="btn btn-danger" asp-area="" asp-controller="Cita" asp-action="Delete" asp-route-id="@cita.Id">Cancelar Cita</a>
+					<span asp-validation-for="@cita" class="text-danger"></span>
+				</td>
 			</tr>
 		}
 	</tbody>
 </table>
-
 
 <a class="btn btn-success mt-5" style="margin: 10px" asp-controller="Cita" asp-action="Create">Agendar Cita</a>

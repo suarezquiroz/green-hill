@@ -31,6 +31,11 @@ namespace Green_Hill.Controllers
 
         }
 
+        public IActionResult Index() {
+
+            return RedirectToAction("Listado");
+        }
+
         public IActionResult Listado()
         {
             var citas = _citas.GetAllCitasUsuario(_usuarios.GetByIdentityUserId(_userManager.GetUserId(this.User)).Id);
@@ -56,7 +61,7 @@ namespace Green_Hill.Controllers
             vm.Cita.TipoCita = _tiposCita.GetById(vm.Cita.TipoCitaId);
             vm.TiposCita = _tiposCita.GetAll();
             //is Fecha in at least 15 minutes
-            if ((vm.Cita.Fecha - DateTime.Now).Minutes < 15)
+            if ((vm.Cita.Fecha - DateTime.Now).TotalMinutes < 15)
             {
                 ModelState.AddModelError("Hora", "La Fecha y Hora de la cita ya paso o es en menos de 15 minutos");
                 return View(vm);
@@ -74,21 +79,20 @@ namespace Green_Hill.Controllers
             return RedirectToAction("Listado");
         }
 
-        public IActionResult Delete(int Id)
+        public IActionResult DeleteConfirmation(int Id)
         {
             Cita cita = _citas.GetById(Id);
             return View(cita);
         }
 
-        [HttpDelete]
-        public IActionResult Delete(Cita cita)
+        public IActionResult Delete(int Id)
         {
-            //Cita cita = _citas.GetById(Id);
+            Cita cita = _citas.GetById(Id);
 
-            if ((cita.Fecha - DateTime.Now).Hours < 24 )
+            if ((cita.Fecha - DateTime.Now).TotalHours < 24 )
             {
-                ModelState.AddModelError("Hora", "La cita es en menos de 24 Horas");
-                return View();
+                ModelState.AddModelError("cita", "La cita es en menos de 24 Horas");
+                return RedirectToAction("Listado");
             }
 
             _citas.Delete(cita);

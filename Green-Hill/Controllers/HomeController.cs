@@ -12,7 +12,8 @@ namespace Green_Hill.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+
+            return RedirectToAction("Listado");
         }
 
         public IActionResult About()

@@ -53,7 +53,45 @@ namespace Green_Hill.Controllers
         {
             vm.Cita.Usuario = _usuarios.GetByIdentityUserId(_userManager.GetUserId(this.User));
             vm.Cita.Fecha = new DateTime(vm.Fecha.Year, vm.Fecha.Month, vm.Fecha.Day, vm.Hora.Hour, vm.Hora.Minute, 0);
+            vm.Cita.TipoCita = _tiposCita.GetById(vm.Cita.TipoCitaId);
+            vm.TiposCita = _tiposCita.GetAll();
+            //is Fecha in at least 15 minutes
+            if ((vm.Cita.Fecha - DateTime.Now).Minutes < 15)
+            {
+                ModelState.AddModelError("Hora", "La Fecha y Hora de la cita ya paso o es en menos de 15 minutos");
+                return View(vm);
+
+            }
+            // is there already a Cita in the same day?
+            if (_citas.GetAllCitasUsuario(vm.Cita.UsuarioId).Any(cita => cita.Fecha.Date == vm.Cita.Fecha.Date))
+            {
+                //show error
+                ModelState.AddModelError("Fecha", "El Paciente ya tiene una cita programada para este dia");
+                return View(vm);
+            }
+
             _citas.Create(vm.Cita);
+            return RedirectToAction("Listado");
+        }
+
+        public IActionResult Delete(int Id)
+        {
+            Cita cita = _citas.GetById(Id);
+            return View(cita);
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(Cita cita)
+        {
+            //Cita cita = _citas.GetById(Id);
+
+            if ((cita.Fecha - DateTime.Now).Hours < 24 )
+            {
+                ModelState.AddModelError("Hora", "La cita es en menos de 24 Horas");
+                return View();
+            }
+
+            _citas.Delete(cita);
             return RedirectToAction("Listado");
         }
     }
